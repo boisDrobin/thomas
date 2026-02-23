@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thomas et les 3 parchemins du Montage</title>
+  <style>
+    :root{
+      --bg:#0f1220;
+      --card:#161a2c;
+      --text:#f2f4ff;
+      --muted:#b9c0ff;
+      --line:rgba(255,255,255,.12);
+      --btn:#f2f4ff;
+      --btnText:#0f1220;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: var(--bg);
+      color: var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    .wrap{width:min(900px, 100%);}
+    header{
+      margin-bottom:12px;
+    }
+    h1{
+      margin:0 0 6px 0;
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .card{
+      border:1px solid var(--line);
+      background:var(--card);
+      border-radius:14px;
+      overflow:hidden;
+    }
+    .media{
+      width:100%;
+      aspect-ratio: 16/9;
+      background:#0b0e18;
+      display:block;
+      object-fit:cover;
+    }
+    .content{
+      padding:16px;
+      display:grid;
+      gap:10px;
+    }
+    .topline{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .counter{
+      font-size:12px;
+      color:var(--muted);
+    }
+    h2{
+      margin:0;
+      font-size:18px;
+      font-weight:800;
+    }
+    p{
+      margin:0;
+      line-height:1.55;
+      color:var(--text);
+      white-space:pre-wrap;
+      font-size:15px;
+    }
+    .progress{
+      height:8px;
+      background:rgba(255,255,255,.08);
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid var(--line);
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: rgba(255,255,255,.75);
+      transition: width .25s ease;
+    }
+    .controls{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:12px 16px 16px;
+      border-top:1px solid var(--line);
+    }
+    .btns{display:flex; gap:8px; flex-wrap:wrap;}
+    button{
+      cursor:pointer;
+      border:none;
+      border-radius:10px;
+      padding:9px 12px;
+      font-weight:800;
+      background: var(--btn);
+      color: var(--btnText);
+    }
+    button.secondary{
+      background: transparent;
+      color: var(--text);
+      border:1px solid var(--line);
+      font-weight:800;
+    }
+    button:disabled{opacity:.5; cursor:not-allowed;}
+    .hint{
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      text-align:right;
+    }
+    kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size:11px;
+      padding:2px 6px;
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.2);
+      color:var(--text);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Thomas et les 3 parchemins du Montage ✨</h1>
+      <p class="sub">Clique pour faire défiler l’histoire (PID • IMA • PCM).</p>
+    </header>
+
+    <section class="card" aria-live="polite">
+      <!-- Image de la scène -->
+      <img id="sceneImg" class="media" alt="Illustration de la scène" src="images/scene-01.jpg" />
+
+      <div class="content">
+        <div class="topline">
+          <div class="counter" id="sceneCounter">1 / 10</div>
+        </div>
+
+        <h2 id="sceneTitle">—</h2>
+        <p id="sceneText">—</p>
+
+        <div class="progress" aria-label="Progression">
+          <div class="bar" id="progressBar"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="btns">
+          <button class="secondary" id="prevBtn" type="button">← Précédent</button>
+          <button id="nextBtn" type="button">Suivant →</button>
+          <button class="secondary" id="restartBtn" type="button">Recommencer</button>
+        </div>
+        <div class="hint">
+          <span>Raccourcis</span>
+          <kbd>←</kbd><kbd>→</kbd><kbd>Espace</kbd><kbd>R</kbd>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ✅ Remplace juste les chemins d'images ici après upload
+    // Exemple recommandé:
+    // images/scene-01.jpg, images/scene-02.jpg, etc.
+    const scenes = [
+      {
+        title: "Le calme avant le render",
+        text:
+`Dans le Royaume de l’Intranet, trois parchemins magiques attendent d’être finalisés : PID, IMA et PCM.
+Ils brillent… mais ils clignotent aussi comme une timeline pas encore exportée.`,
+        img: "images/scene-01.jpg"
+      },
+      {
+        title: "L’appel du héros",
+        text:
+`Au sommet de la Tour du Cut Parfait, le maître du Montage lève la main :
+« Il nous faut un guerrier. Un vrai. Un Thomas. »
+WHOOSH… Thomas arrive en glide sur sa planche, casque audio sur les oreilles.`,
+        img: "images/scene-02.jpg"
+      },
+      {
+        title: "Le dojo des transitions",
+        text:
+`Thomas entre dans le Dojo des Transitions.
+Chaque fondu mal placé se transforme en mini-démon.
+Il enchaîne : punch-cut, kick-zoom, uppercut-jumpcut…
+Les démons disparaissent. La timeline respire.`,
+        img: "images/scene-03.jpg"
+      },
+      {
+        title: "PID se réveille",
+        text:
+`Le parchemin PID tremble : « Je veux être fluide ! Je veux être clair ! »
+Thomas le fixe, calme :
+« Ok PID. Version propre. Impact maximum. »
+BAM : chapitrage, rythme, audio nickel.`,
+        img: "images/scene-04.jpg"
+      },
+      {
+        title: "IMA et l’île des méduses",
+        text:
+`Le parchemin IMA vit sur une île remplie de méduses pixelisées.
+Thomas sort son arme secrète : le Recadrage Juste™.
+Une médusa tente une attaque : « Je vais ralentir ton export ! »
+Thomas : « Pas aujourd’hui. »`,
+        img: "images/scene-05.jpg"
+      },
+      {
+        title: "PCM, le boss final",
+        text:
+`PCM arrive avec une barre de vie énorme :
+« Je suis long. Je suis dense. Je suis… PCM. »
+Thomas souffle, focus…
+Combo légendaire : Structure → Clarté → Dynamisme.`,
+        img: "images/scene-06.jpg"
+      },
+      {
+        title: "Le skatepark du rendu",
+        text:
+`Le Royaume retient son souffle : export final.
+Thomas pousse sur sa planche, prend de la vitesse…
+GRAB au-dessus de « Processing… »
+Atterrissage parfait sur « Export terminé ✅ ».`,
+        img: "images/scene-07.jpg"
+      },
+      {
+        title: "Les 3 parchemins s’illuminent",
+        text:
+`PID, IMA et PCM deviennent trois formations prêtes à partir au front.
+Le Royaume applaudit.
+Même les méduses (celles qui restent) se taisent.`,
+        img: "images/scene-08.jpg"
+      },
+      {
+        title: "La phrase du héros",
+        text:
+`Thomas sourit :
+« Bon. On enchaîne.
+Parce que la magie, c’est bien…
+mais les deadlines, c’est réel. »`,
+        img: "images/scene-09.jpg"
+      },
+      {
+        title: "FIN (pour l’instant)",
+        text:
+`Un nouveau parchemin apparaît au loin…
+Thomas soupire, puis sourit :
+« Ok. Mais d’abord… je finis les trois. Propre. »`,
+        img: "images/scene-10.jpg"
+      }
+    ];
+
+    let idx = 0;
+
+    const sceneCounter = document.getElementById("sceneCounter");
+    const sceneTitle   = document.getElementById("sceneTitle");
+    const sceneText    = document.getElementById("sceneText");
+    const sceneImg     = document.getElementById("sceneImg");
+    const progressBar  = document.getElementById("progressBar");
+
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const restartBtn = document.getElementById("restartBtn");
+
+    function render(){
+      const s = scenes[idx];
+      sceneTitle.textContent = s.title;
+      sceneText.textContent  = s.text;
+      sceneImg.src = s.img;
+
+      sceneCounter.textContent = `${idx + 1} / ${scenes.length}`;
+      progressBar.style.width = `${((idx + 1) / scenes.length) * 100}%`;
+
+      prevBtn.disabled = idx === 0;
+      nextBtn.disabled = idx === scenes.length - 1;
+    }
+
+    function next(){ if(idx < scenes.length - 1){ idx++; render(); } }
+    function prev(){ if(idx > 0){ idx--; render(); } }
+    function restart(){ idx = 0; render(); }
+
+    prevBtn.addEventListener("click", prev);
+    nextBtn.addEventListener("click", next);
+    restartBtn.addEventListener("click", restart);
+
+    window.addEventListener("keydown", (e) => {
+      const k = e.key;
+      if(k === "ArrowRight" || k === " "){ e.preventDefault(); next(); }
+      if(k === "ArrowLeft"){ prev(); }
+      if(k.toLowerCase() === "r"){ restart(); }
+    });
+
+    render();
+  </script>
+</body>
+</html>
